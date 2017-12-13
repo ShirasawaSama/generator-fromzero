@@ -1,0 +1,6 @@
+{
+  "files.eol": "\n",   // 换行符设置为 \n
+  "editor.tabSize": 2, // Tab 大小为两个空格
+  // 关闭自带的 JavaScript 语法检查以更好使用 ESlint
+  "javascript.validate.enable": false
+}

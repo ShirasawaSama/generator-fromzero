@@ -1,0 +1,47 @@
+{
+  "name": "generator-fromzero",
+  "version": "0.1.1",
+  "description": "快速生成JavaScript开发环境",
+  "homepage": "http://mengb.net/coding.php/generator-fromzero",
+  "author": "Shirasawa",
+  "main": "index.js",
+  "keywords": [
+    "fromzero",
+    "yeoman-generator",
+    "webpack",
+    "eslint"
+  ],
+  "files": [
+    "index.js",
+    "generators"
+  ],
+  "devDependencies": {
+    "babel-eslint": "^8.0.3",
+    "eslint": "^4.13.1",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "generator-license": "^5.2.0",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "yeoman-generator": "^2.0.1"
+  },
+  "scripts": {
+    "test": "npm run lint",
+    "precommit": "npm test",
+    "prepublish": "node prepublish",
+    "lint": "eslint index.js generators",
+    "fix": "eslint --fix index.js generators"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://mengb.net/coding.php/generator-fromzero"
+  },
+  "license": "MIT"
+}
