@@ -1,12 +1,14 @@
 const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = require('./webpack.config.base.js')({
   hash: true,
   env: 'production',
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new OptimizeCssAssetsPlugin(),
     new ExtractTextPlugin('[name].[chunkhash:8].css'),
     new CleanWebpackPlugin(['../dist']),
     new webpack.optimize.UglifyJsPlugin({

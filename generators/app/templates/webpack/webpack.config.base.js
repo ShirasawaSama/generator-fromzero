@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const autoprefixer = require('autoprefixer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const { name } = require('../package.json')
 
@@ -128,6 +129,7 @@ module.exports = ({ publicPath = '/', env, hash, plugins, sourceMap, other }) =>
     },
     plugins: [
       ...plugins,
+      new FriendlyErrorsWebpackPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
