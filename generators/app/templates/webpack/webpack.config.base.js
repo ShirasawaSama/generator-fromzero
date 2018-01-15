@@ -15,7 +15,7 @@ const targets = {
   safari: 8
 }
 
-module.exports = ({ publicPath = '/', env, hash, plugins, sourceMap, other }) => {
+module.exports = ({ publicPath = '', env, hash, plugins, sourceMap, other }) => {
   const dev = env === 'development'
   const babelLoader = {
     loader: 'babel-loader',
@@ -131,7 +131,7 @@ module.exports = ({ publicPath = '/', env, hash, plugins, sourceMap, other }) =>
       ...plugins,
       new FriendlyErrorsWebpackPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.NamedModulesPlugin(),
+      new webpack.HashedModuleIdsPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(env)
       }),

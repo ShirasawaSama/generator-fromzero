@@ -1,7 +1,9 @@
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const { join } = require('path')
 
 module.exports = require('./webpack.config.base.js')({
   hash: true,
@@ -10,7 +12,8 @@ module.exports = require('./webpack.config.base.js')({
     new webpack.optimize.OccurrenceOrderPlugin(),
     new OptimizeCssAssetsPlugin(),
     new ExtractTextPlugin('[name].[chunkhash:8].css'),
-    new CleanWebpackPlugin(['../dist']),
+    new CleanWebpackPlugin(['dist'], { dir: true, root: join(__dirname, '..') }),
+    new CopyWebpackPlugin([ { from: '../public' } ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         screw_ie8: true,

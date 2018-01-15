@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const OpenBrowserPlugin = require('open-browser-webpack-plugin')
 const { join } = require('path')
 
 const port = process.env.PORT || 8080
@@ -15,13 +14,13 @@ module.exports = require('./webpack.config.base.js')({
       hot: true,
       publicPath: '/',
       historyApiFallback: true,
+      clientLogLevel: 'warning',
       contentBase: join(__dirname, '../public')
     }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new OpenBrowserPlugin({ url: 'http://localhost:' + port })
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 })
