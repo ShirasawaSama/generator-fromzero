@@ -16,10 +16,10 @@ module.exports = class FromZeroGenerator extends Generator {
     chalk.cyan('C') + ' 键来终止初始化\n\n')
     return this
       .prompt(getPrompts(this.user.git.name))
-      .then(props => (
-        (props.name = _.kebabCase(props.name)),
-        (this.props = _.extend(this.props, props))
-      ))
+      .then(props => {
+        props.name = _.kebabCase(props.name)
+        this.props = props
+      })
   }
 
   default () {
@@ -44,30 +44,57 @@ module.exports = class FromZeroGenerator extends Generator {
   }
 
   writing () {
-    ['vscode', 'gitignore', 'eslintignore', 'eslintrc.json'].forEach(n => this.fs.copy(
-      path.join(__dirname, n),
-      this.destinationPath('.' + n)
-    ))
-    this.fs.copy(
-      this.templatePath('**/*'),
-      this.destinationPath()
-    )
-    this.fs.copy(
-      this.templatePath(path.join(__dirname, 'packageLock.json')),
-      this.destinationPath('package-lock.json')
-    )
+    const copy = (...name) => name.forEach(n => this.fs.copy(this.templatePath(
+      n.replace(/^\./, '')), this.destinationPath(
+      n.includes('*') ? n.substring(0, n.indexOf('*')) : n)))
+
+    const merge = (name, data) => {
+      if (data) {
+        this.fs.writeJSON(this.destinationPath(name),
+          _.merge({}, this.fs.readJSON(this.templatePath(name.replace(/$\./, ''))), data))
+      } else copy(name)
+    }
     const { dependencies, devDependencies, scripts } = this.fs.readJSON(
       path.join(__dirname, 'package.json'))
-    const repository = this.props.repository
+    copy('public', '.vscode', '.gitignore', 'webpack/index.ejs', 'webpack/polyfill.js')
+    const devdeps = Object.keys(devDependencies)
+    const { name, react, author, keywords, typescript, repository, description } = this.props
+    let unsets = []
+    if (typescript) {
+      unsets = devdeps.filter(n => n.startsWith('eslint'))
+      unsets.push('babel-eslint')
+      scripts.lint = 't' + scripts.lint
+      scripts.fix = 't' + scripts.fix
+      scripts.start += 'ts'
+      scripts.build += 'ts'
+      merge('tslint.json', react && { extends: ['tslint-react'] })
+      merge('tsconfig.json', react && { compilerOptions: { jsx: 'react' } })
+      copy('src/index.ts' + (react ? 'x' : ''), 'webpack/*.ts')
+    } else {
+      unsets = devdeps.filter(n => n.startsWith('ts'))
+      unsets.push('typescript')
+      scripts.lint = 'e' + scripts.lint
+      scripts.fix = 'e' + scripts.fix
+      scripts.start += 'js'
+      scripts.build += 'js'
+      merge('.eslintrc.json', react && { extends: ['standard-react'], plugins: ['react', 'jsx-a11y'] })
+      copy('.eslintignore', 'src/index.js' + (react ? 'x' : ''), 'webpack/*.js')
+    }
+    this.fs.writeJSON(this.destinationPath('.babelrc'), react ? { presets: ['react'] } : {})
+
+    unsets.forEach(n => delete devDependencies[n])
+    Object.keys(dependencies)
+      .forEach(n => ((!typescript && n.startsWith('@types')) || (!react && n.startsWith('react'))) &&
+      delete dependencies[n])
     const pkg = {
       private: true,
-      name: this.props.name,
+      name,
       version: '0.0.0',
-      main: 'index.js',
-      description: this.props.description,
-      author: this.props.author,
+      main: 'dist/index.js',
+      author,
+      description,
       homepage: repository,
-      keywords: _.uniq(this.props.keywords.concat(['from-zero'])),
+      keywords: _.uniq(keywords.concat(['fromzero'])).filter(Boolean),
       repository: { type: 'git', url: repository },
       scripts,
       dependencies,
@@ -77,13 +104,13 @@ module.exports = class FromZeroGenerator extends Generator {
     this.fs.writeJSON(this.destinationPath('package.json'), pkg)
 
     this.fs.copyTpl(
-      path.join(__dirname, 'README.tpl.md'),
+      this.templatePath('README.md'),
       this.destinationPath('README.md'),
       {
+        name,
+        author,
         repository,
-        name: this.props.name,
-        description: this.props.description,
-        author: this.props.author,
+        description,
         repositoryName: repository ? path.basename(repository).replace(/\.git$/, '') : ''
       }
     )
@@ -102,9 +129,9 @@ module.exports = class FromZeroGenerator extends Generator {
     }
     this.log(chalk.yellow('\n\n已初始化完毕! 请按照下面的提示进行操作~'))
     this.log('\n' + chalk.cyan('    0.') + ' 输入 ' + chalk.green('cd ' + this.props.name) +
-      ' 进入项目文件夹\n' + chalk.cyan('    1.') + ' 输入 ' + chalk.green('npm install') +
-      ' 以安装依赖\n' + chalk.cyan('    2.') + ' 输入 ' + chalk.green('npm start') +
-      ' 进入开发模式\n' + chalk.cyan('    3.') + ' 输入 ' + chalk.green('npm run build') +
+      '     进入项目文件夹\n' + chalk.cyan('    1.') + ' 输入 ' + chalk.green('npm install') +
+      '   以安装依赖\n' + chalk.cyan('    2.') + ' 输入 ' + chalk.green('npm start') +
+      '     进入开发模式\n' + chalk.cyan('    3.') + ' 输入 ' + chalk.green('npm run build') +
       ' 进行生产模式的构建操作\n\n' + chalk.yellow('祝您使用愉快 (/≧▽≦)/~┴┴'))
   }
 }

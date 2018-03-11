@@ -1,17 +1,17 @@
-const fs = require('fs')
-const path = require('path')
-const webpack = require('webpack')
-const merge = require('lodash.merge')
-const autoprefixer = require('autoprefixer')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+import * as fs from 'fs'
+import * as path from 'path'
+import * as webpack from 'webpack'
+import * as merge from 'lodash.merge'
+import * as autoprefixer from 'autoprefixer'
+import * as HtmlWebpackPlugin from 'html-webpack-plugin'
+import * as FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin'
 
 const { name } = require('../package.json')
 const babelrcFile = path.join(__dirname, '../.babelrc')
 let babelrc = {}
 if (fs.existsSync(babelrcFile)) {
   babelrc = fs.readFileSync(babelrcFile).toString()
-  if (babelrc) babelrc = JSON.parse(babelrc)
+  if (babelrc) babelrc = JSON.parse(babelrc as string)
 }
 
 const targets = {
@@ -23,7 +23,8 @@ const targets = {
   safari: 8
 }
 
-module.exports = ({ mode, hash, plugins, sourceMap, other }) => {
+export default (args: { mode: string, hash?: boolean, plugins?: any[], sourceMap?: boolean, other?: any }) => {
+  const { mode, hash, plugins, sourceMap, other } = args
   process.env.NODE_ENV = mode
   const dev = mode === 'development'
   const babelLoader = {
@@ -43,7 +44,7 @@ module.exports = ({ mode, hash, plugins, sourceMap, other }) => {
     mode,
     context: path.join(__dirname, '../src'),
     resolve: {
-      extensions: ['.js', '.json', '.jsx', '.tsx', '.ts'],
+      extensions: ['.wasm, .mjs', '.js', '.json', '.jsx', '.tsx', '.ts'],
       modules: [
         path.join(__dirname, '../src'),
         'node_modules'
@@ -62,6 +63,11 @@ module.exports = ({ mode, hash, plugins, sourceMap, other }) => {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           use: babelLoader
+        },
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: [{ loader: 'ts-loader', options: { compilerOptions: { module: 'esnext' } } }, babelLoader]
         },
         {
           test: /\.(le|c)ss$/,

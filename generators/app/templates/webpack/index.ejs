@@ -1,24 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <link rel="shortcut icon" href="favicon.ico" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#eee">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="favicon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#eee">
+  <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.title %>">
+  <link rel="apple-touch-icon-precomposed" href="favicon.png">
+  <meta name="msapplication-TileImage" content="favicon.png">
+  <meta name="msapplication-TileColor" content="#eee">
+  <link rel="shortcut icon" href="favicon.ico" />
+  <style>
     body {
       font-family: "Helvetica Neue For Number", -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB",
-        "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB",
+      "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
       text-align: center;
       margin: 0px;
+      background: #eee;
     }
-    </style>
-  </head>
-  <body>
-    <h1 style="font-size: 4rem">Hello World!</h1>
-    <h3>(按下F12发现精彩)</h3>
-    <p style="font-size: 15rem; color: #bbb; margin: 0px">:D</p>
-  </body>
+
+    p {
+      font-size: 15rem;
+      color: #aaa;
+      margin: 0px;
+    }
+
+    h1 {
+      font-size: 4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
 </html>

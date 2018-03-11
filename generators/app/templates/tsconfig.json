@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "sourceMap": true,
+    "target": "esnext",
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

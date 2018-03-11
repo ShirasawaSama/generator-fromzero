@@ -1,10 +1,7 @@
 {
   "extends": "standard",
   "plugins": [
-    "standard",
-    "promise",
-    "import",
-    "node"
+    "standard"
   ],
   "parser": "babel-eslint"
 }

@@ -26,5 +26,19 @@ module.exports = author => [
     name: 'keywords',
     message: '请输入项目关键词 (以空格分隔):',
     filter: words => words.split(/\s* \s*/g)
+  },
+  {
+    name: 'typescript',
+    message: '是否使用 TypeScript:',
+    default: false,
+    type: Boolean,
+    filter: Boolean
+  },
+  {
+    name: 'react',
+    message: '是否使用 React:',
+    default: false,
+    type: Boolean,
+    filter: Boolean
   }
 ]

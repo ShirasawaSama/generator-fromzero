@@ -1,10 +1,10 @@
-const webpack = require('webpack')
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const { join } = require('path')
+import * as webpack from 'webpack'
+import * as CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+import { join } from 'path'
 
-const extend = require('./webpack.config.base')
+import extend from './webpack.config.base'
 
-module.exports = extend({
+export default extend({
   sourceMap: true,
   mode: 'development',
   other: {

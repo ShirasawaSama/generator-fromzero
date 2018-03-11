@@ -5,28 +5,16 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { join } = require('path')
 
-module.exports = require('./webpack.config.base.js')({
+const extend = require('./webpack.config.base')
+
+module.exports = extend({
   hash: true,
-  env: 'production',
+  mode: 'production',
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new OptimizeCssAssetsPlugin(),
     new ExtractTextPlugin('[name].[chunkhash:8].css'),
     new CleanWebpackPlugin(['dist'], { dir: true, root: join(__dirname, '..') }),
-    new CopyWebpackPlugin([ { from: '../public' } ]),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        screw_ie8: true,
-        warnings: false
-      },
-      mangle: {
-        screw_ie8: true
-      },
-      output: {
-        comments: false,
-        screw_ie8: true,
-        ascii_only: true
-      }
-    })
+    new CopyWebpackPlugin([ { from: '../public' } ])
   ]
 })
