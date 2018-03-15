@@ -1,6 +1,6 @@
 {
   "name": "generator-fromzero",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "快速生成JavaScript开发环境",
   "homepage": "https://github.com/ShirasawaSama/generator-fromzero.git",
   "author": "Shirasawa",
